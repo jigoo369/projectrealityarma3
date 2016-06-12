@@ -57,7 +57,7 @@ GVAR(deactivateTicketSystem) = false;
 
         addMissionEventHandler ["EntityKilled", {
             params ["_killedEntity", "_killer"];
-            if (_killedEntity getVariable [QEGVAR(VehicleRespawn,ticketValue),0] > 0) exitWith {
+            if (_killedEntity getVariable ["ticketValue",0] > 0) exitWith {
                 private _ticketValue = _killedEntity getVariable ["ticketValue",0];
                 private _currentSide = _killedEntity getVariable ["side","unknown"];
                 private _tickets = missionNamespace getVariable format [QGVAR(sideTickets_%1), _currentSide];
@@ -81,7 +81,7 @@ GVAR(deactivateTicketSystem) = false;
             };
         }];
 
-        ["sector_side_changed", {
+        ["sectorSideChanged", {
             (_this select 0) params ["_sector", "_oldSide", "_newSide"];
             if (_oldSide != sideUnknown) then {
                 private _tickets = missionNamespace getVariable format [QGVAR(sideTickets_%1), _oldSide];
@@ -108,19 +108,22 @@ GVAR(deactivateTicketSystem) = false;
                 [{
                     (_this select 0) params ["_side","_opposingSide"];
                     private _id = (_this select 1);
+
+                    private _nbrOwnedSectors = {
+                        !((_x getVariable ["side",sideUnknown]) in [_opposingSide]);
+                    } count GVAR(allSectorsArray);
+
+                    if (_nbrOwnedSectors > 1) exitWith {
+                        [_id] call CFUNC(removePerFrameHandler);
+                    };
+
                     private _tickets = missionNamespace getVariable format [QGVAR(sideTickets_%1), _side];
                     _tickets = _tickets - (GVAR(ticketBleed) select 1);
                     missionNamespace setVariable [format [QGVAR(sideTickets_%1), _side], _tickets];
                     publicVariable (format [QGVAR(sideTickets_%1), _side]);
                     "ticketsChanged" call CFUNC(globalEvent);
 
-                    private _nbrOwnedSectors = {
-                        !((_x getVariable ["side",sideUnknown]) in [_opposingSide]);
-                    } count GVAR(allSectorsArray);
 
-                    if (_nbrOwnedSectors > 1) then {
-                        [_id] call CFUNC(removePerFrameHandler);
-                    };
                 }, GVAR(ticketBleed) select 0, [_looserSide, _newSide]] call CFUNC(addPerFrameHandler);
             };
         }] call CFUNC(addEventhandler);

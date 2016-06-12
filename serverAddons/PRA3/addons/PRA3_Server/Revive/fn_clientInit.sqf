@@ -30,8 +30,10 @@ call FUNC(revive);
 [QGVAR(Killed), {
     (_this select 0) params ["_unit"];
 
-    [_unit, QGVAR(selectionDamage), GVAR(selections) apply {0}] call CFUNC(setVariablePublic);
+    _unit setVariable [QGVAR(cachedDamage), GVAR(selections) apply {[0]}];
+    [_unit, QGVAR(bloodLoss), 0] call CFUNC(setVariablePublic);
 
+    [_unit, QGVAR(selectionDamage), GVAR(selections) apply {0}] call CFUNC(setVariablePublic);
     [_unit, QGVAR(HealingProgress), 0] call CFUNC(setVariablePublic);
     [_unit, QGVAR(HealingRate), 0] call CFUNC(setVariablePublic);
     [_unit, QGVAR(HealingTimestamp), -1] call CFUNC(setVariablePublic);
@@ -41,5 +43,5 @@ call FUNC(revive);
 ["Respawn", {
     (_this select 0) params ["_newUnit"];
 
-    _newUnit setVariable [QGVAR(selectionDamage), _newUnit getVariable [QGVAR(selectionDamage), GVAR(selections) apply {0}], true];
+    _newUnit setVariable [QGVAR(cachedDamage), GVAR(selections) apply {[0]}];
 }] call CFUNC(addEventHandler);

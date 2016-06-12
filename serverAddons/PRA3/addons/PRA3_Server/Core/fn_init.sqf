@@ -1,12 +1,12 @@
 #include "macros.hpp"
-
+GVAR(allCustomNamespaces) = [];
 
 GVAR(cachedCall) = call FUNC(createNamespace);
 if (hasInterface) then {
     PRA3_Player setVariable [QGVAR(playerName), profileName, true];
 };
 
-GVAR(ignoreVariables) = [toLower(QGVAR(PlayerInteraction_Actions)),toLower(QGVAR(tempUnit)), toLower(QGVAR(isProcessed)), toLower(QEGVAR(Revive,reviveEventhandlerAdded))];
+GVAR(ignoreVariables) = [toLower(QGVAR(PlayerInteraction_Actions)),toLower(QGVAR(tempUnit)), toLower(QGVAR(isProcessed)), toLower(QEGVAR(Revive,reviveEventhandlerAdded)), toLower(QEGVAR(Revive,damageWaitIsRunning))];
 
 GVAR(allLocationTypes) = [];
 {

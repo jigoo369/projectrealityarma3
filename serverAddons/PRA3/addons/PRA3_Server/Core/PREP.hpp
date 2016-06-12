@@ -80,7 +80,7 @@ EPREP(Mutex,mutex)
 // Namespaces
 EPREP(Namespaces,createNamespace)
 EPREP(Namespaces,deleteNamespace)
-EPREP(Namespaces,getVariableLoc)
+EPREP(Namespaces,getVariable)
 EPREP(Namespaces,getLogicGroup)
 
 // Notification System
@@ -105,6 +105,10 @@ EPREP(StatusEffects,setStatusEffect)
 // Team Color Sync
 EPREP(TeamColorSync,clientInitTeamColorSync)
 
+// Performance Info
+EPREP(PerformanceInfo,postInitPerformance)
+EPREP(PerformanceInfo,dumpPerformanceInformation)
+
 // Init
 PREP(init)
 
@@ -114,19 +118,19 @@ PREP(blurScreen)
 PREP(cachedCall)
 PREP(codeToString)
 PREP(createPPEffect)
-PREP(disableUserInput)
 PREP(directCall)
+PREP(deleteAtEntry)
+PREP(disableUserInput)
 PREP(findSavePosition)
 PREP(fixFloating)
 PREP(fixPosition)
-PREP(getNearestLocationName)
 PREP(getFOV)
+PREP(getNearestLocationName)
+PREP(getNearUnits)
 PREP(groupPlayers)
 PREP(isAlive)
 PREP(name)
 PREP(sanitizeString)
 PREP(setVariablePublic)
 
-#ifdef isDev
-    PREP(serverInit)
-#endif
+PREP(serverInit)
